@@ -39,14 +39,23 @@ public class CircuitBreaker {
     /**
      * 当前熔断器状态 true:开启 false:关闭
      */
-    private Boolean isOpen;
+    private boolean isOpen;
+
+    public boolean getOpen() {
+        return isOpen;
+    }
+
+    /**
+     * 获取熔断器状态
+     */
 
 
-    public boolean isOpen() {
+    public boolean isOpenState() {
         //是否到达失败阀值
         if (failureCount.intValue() == failureThreshold){
             resetRecoverTime();
             isOpen = true;
+            System.out.println("熔断器状态: 打开");
             return true;
         }
 
@@ -56,25 +65,26 @@ public class CircuitBreaker {
         }
 
         //到达间隔时间
-        if (isOpen && isTimeToClose()){
+        if (failureCount.intValue() > failureThreshold && isTimeToClose()){
+            System.out.println("达到熔断时间关闭熔断器");
             isOpen = false;
             resetFailureCount();
         }
-        return isOpen;
+        return false;
     }
 
     /**
      * 调用次数增加
      */
 
-    protected void increaseAccesssCount() {
+    public void increaseAccessCount() {
         hasAccessSampleSize.incrementAndGet();
     }
 
     /**
      * 失败次数递增
      */
-    protected void increaseFailureCount() {
+    public void increaseFailureCount() {
         failureCount.incrementAndGet();
     }
 
@@ -123,23 +133,40 @@ public class CircuitBreaker {
         this.failureThreshold = failureThreshold;
         this.sampleSize = sampleSize;
         this.timeout = timeout;
-        isOpen = false;
+        isOpen = isOpenState();
     }
 
     public void before() {
-        increaseAccesssCount();
+        increaseAccessCount();
         //如果是断开状态，直接返回
-        if (isOpen()) {
-            throw new RuntimeException("服务已熔断，请稍等重试！");
+        if (isOpenState()) {
+            increaseFailureCount();
+            return;
         }
         checkAccessTime();
+    }
+
+    @Override
+    public String toString() {
+        return "CircuitBreaker{" +
+                "failureCount=" + failureCount +
+                ", sampleSize=" + sampleSize +
+                ", failureThreshold=" + failureThreshold +
+                ", timeout=" + timeout +
+                ", recoverTime=" + recoverTime +
+                ", hasAccessSampleSize=" + hasAccessSampleSize +
+                ", isOpenState=" + isOpen +
+                '}';
     }
 
     /**
      * 方法调用发生异常操作后的操作
      */
+    synchronized
     public void afterException() {
         //增加失败次数
         increaseFailureCount();
     }
+
+
 }

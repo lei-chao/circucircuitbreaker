@@ -14,8 +14,10 @@ public abstract class CircuitBreakerService<Request,Response> {
 
         circuitBreaker.before();
 
-        if (circuitBreaker.isOpen()) {
+        if (circuitBreaker.getOpen()) {
+
             return fallBack(request);
+
         }
 
         Response response;
@@ -41,8 +43,6 @@ public abstract class CircuitBreakerService<Request,Response> {
 
     /**
      * 业务层覆盖该方法，熔断后会执行该方法
-     * @param request
-     * @return
      */
     abstract protected Response fallBack(Request request);
 }

@@ -18,19 +18,12 @@ public class DataProviderTest implements Iterator<Object[]> {
 
     private int used;
 
-    @Override
     public boolean hasNext() {
         return used < size;
     }
 
-    @Override
     public Object[] next() {
         used++;
-        return new Object[random.nextInt(bound)];
-    }
-
-    @Override
-    public void remove() {
-
+        return new Object[]{random.nextInt(bound)};
     }
 }

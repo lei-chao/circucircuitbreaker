@@ -55,7 +55,6 @@ public class CircuitBreaker {
         if (failureCount.intValue() == failureThreshold){
             resetRecoverTime();
             isOpen = true;
-            System.out.println("熔断器状态: 打开");
             return true;
         }
 

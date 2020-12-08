@@ -57,6 +57,7 @@ public class CircuitBreaker {
 
         //到达间隔时间
         if (isOpen && isTimeToClose()){
+            isOpen = false;
             resetFailureCount();
         }
         return isOpen;

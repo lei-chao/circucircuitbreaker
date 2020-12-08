@@ -50,6 +50,7 @@ public class CircuitBreaker {
      */
 
 
+    synchronized
     public boolean isOpenState() {
         //是否到达失败阀值
         if (failureCount.intValue() == failureThreshold){
@@ -67,7 +68,10 @@ public class CircuitBreaker {
         if (failureCount.intValue() > failureThreshold && isTimeToClose()){
             System.out.println("达到熔断时间关闭熔断器");
             isOpen = false;
+            //重置失败次数
             resetFailureCount();
+            //重置恢复时间
+            recoverTime = Long.MAX_VALUE;
         }
         return false;
     }
@@ -135,6 +139,7 @@ public class CircuitBreaker {
         isOpen = isOpenState();
     }
 
+    synchronized
     public void before() {
         increaseAccessCount();
         //如果是断开状态，直接返回
@@ -143,19 +148,6 @@ public class CircuitBreaker {
             return;
         }
         checkAccessTime();
-    }
-
-    @Override
-    public String toString() {
-        return "CircuitBreaker{" +
-                "failureCount=" + failureCount +
-                ", sampleSize=" + sampleSize +
-                ", failureThreshold=" + failureThreshold +
-                ", timeout=" + timeout +
-                ", recoverTime=" + recoverTime +
-                ", hasAccessSampleSize=" + hasAccessSampleSize +
-                ", isOpenState=" + isOpen +
-                '}';
     }
 
     /**

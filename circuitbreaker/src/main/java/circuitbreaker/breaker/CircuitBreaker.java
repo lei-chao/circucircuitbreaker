@@ -138,7 +138,7 @@ public class CircuitBreaker {
      * 方法调用发生异常操作后的操作
      */
     public void afterException() {
-        //增加失败次数计数器
+        //增加失败次数
         increaseFailureCount();
     }
 }

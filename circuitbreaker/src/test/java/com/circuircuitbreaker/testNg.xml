@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite1" parallel="false">
+  <test name="Test">
+    <!--<groups>-->
+      <!--<incloud name="group1"></incloud>-->
+      <!--<incloud name="group2"></incloud>-->
+    <!--</groups>-->
+    <classes>
+      <class name="com.circuircuitbreaker.BreakerTest"/>
+    </classes>
+  </test>
+</suite>

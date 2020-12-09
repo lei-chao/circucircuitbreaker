@@ -120,7 +120,7 @@ public class CircuitBreaker {
         }
     }
 
-    public synchronized boolean isOpenState() {
+    private synchronized boolean isOpenState() {
         //是否到达失败阀值
         if (failureCount >= failureThreshold){
             isOpen = true;
@@ -136,18 +136,5 @@ public class CircuitBreaker {
             recoverTime = Long.MAX_VALUE;
         }
         return isOpen;
-    }
-
-    @Override
-    public String toString() {
-        return "CircuitBreaker{" +
-                "failureCount=" + failureCount +
-                ", sampleSize=" + sampleSize +
-                ", failureThreshold=" + failureThreshold +
-                ", timeout=" + timeout +
-                ", recoverTime=" + recoverTime +
-                ", hasAccessSampleSize=" + hasAccessSampleSize +
-                ", isOpen=" + isOpen +
-                '}';
     }
 }

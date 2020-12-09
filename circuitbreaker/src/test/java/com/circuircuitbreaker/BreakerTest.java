@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 @Test
 public class BreakerTest {
-    private CircuitBreaker breaker = new CircuitBreaker(5, 10, 200);
+    private CircuitBreaker breaker = new CircuitBreaker(5, 10, 20);
 
     private ServiceTest serviceTest = new ServiceTest(breaker);
 

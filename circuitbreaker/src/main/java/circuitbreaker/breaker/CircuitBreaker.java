@@ -45,11 +45,6 @@ public class CircuitBreaker {
         return isOpen;
     }
 
-    /**
-     * 获取熔断器状态
-     */
-
-
     synchronized
     public boolean isOpenState() {
         //是否到达失败阀值
@@ -70,8 +65,6 @@ public class CircuitBreaker {
             isOpen = false;
             //重置失败次数
             resetFailureCount();
-            //重置恢复时间
-            recoverTime = Long.MAX_VALUE;
         }
         return false;
     }
@@ -139,7 +132,6 @@ public class CircuitBreaker {
         isOpen = isOpenState();
     }
 
-    synchronized
     public void before() {
         increaseAccessCount();
         //如果是断开状态，直接返回

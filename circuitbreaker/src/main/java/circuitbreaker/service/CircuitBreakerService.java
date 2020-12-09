@@ -12,8 +12,6 @@ public abstract class CircuitBreakerService<Request,Response> {
 
     public Response execute(Request request) throws Exception {
 
-        System.out.println("熔断器初始化circuitBreaker" + circuitBreaker );
-
         circuitBreaker.before();
 
         if (circuitBreaker.getOpen()) {
